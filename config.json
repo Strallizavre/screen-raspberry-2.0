@@ -1,0 +1,5 @@
+{
+  "device_id": "raspberry-int-1",
+  "api_url": "https://sibyl-system.ru/api",
+  "poll_interval": 60
+}
