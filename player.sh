@@ -2,32 +2,34 @@
 
 MODE=$1
 SOURCE=$2
-EXTRA=$3
-
 VERSION=$(cat /opt/player/version.txt)
-MODEL=$(cat /proc/device-tree/model)
+
+MODEL=$(tr -d '\0' < /proc/device-tree/model | cut -d ' ' -f1-3)
 
 OSD="v$VERSION | $MODEL | $MODE"
 
-if [ "$EXTRA" == "OFFLINE" ]; then
-    OSD="$OSD | OFFLINE"
-fi
-
 BASE_ARGS=(
-    --fs
-    --no-border
-    --really-quiet
-    --osd-level=1
-    --osd-msg1="$OSD"
-    --ao=alsa
-    --audio-device=alsa
-    --cache=yes
-    --cache-secs=10
+    --fullscreen
+    --no-terminal
+    --quiet
+
+    # 🔥 плавность
     --hwdec=auto
+    --vd-lavc-threads=2
+    --cache=yes
+    --cache-secs=20
+
+    # 🔥 OSD
+    --osd-level=3
+    --osd-font-size=18
+    --osd-msg1="$OSD"
+
+    # 🔥 звук HDMI
+    --audio-device=alsa/default
 )
 
-if [ "$MODE" == "file" ]; then
-    exec mpv "${BASE_ARGS[@]}" --loop "$SOURCE"
-elif [ "$MODE" == "stream" ]; then
-    exec mpv "${BASE_ARGS[@]}" "$SOURCE"
+if [ "$MODE" = "file" ]; then
+    mpv "${BASE_ARGS[@]}" --loop "$SOURCE"
+else
+    mpv "${BASE_ARGS[@]}" "$SOURCE"
 fi

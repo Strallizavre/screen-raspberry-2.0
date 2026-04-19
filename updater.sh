@@ -1,18 +1,12 @@
 #!/bin/bash
 
-BASE_DIR="/opt/player"
-ARCHIVE="/tmp/update.tar.gz"
+URL=$1
+TMP="/tmp/update.tar.gz"
 
-echo "[UPDATER] Downloading..."
+echo "[UPDATER] Скачивание обновления"
+curl -L "$URL" -o "$TMP"
 
-wget -O $ARCHIVE "$1"
+echo "[UPDATER] Распаковка"
+tar -xzf "$TMP" -C /opt/player
 
-echo "[UPDATER] Extracting..."
-
-tar -xzf $ARCHIVE -C $BASE_DIR
-
-rm $ARCHIVE
-
-echo "[UPDATER] Restarting..."
-
-systemctl restart player
+echo "[UPDATER] Готово"
