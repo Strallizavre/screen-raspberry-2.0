@@ -14,17 +14,22 @@ BASE_ARGS=(
     --quiet
 
     # 🔥 плавность
-    --hwdec=auto
-    --vd-lavc-threads=2
-    --cache=yes
-    --cache-secs=20
+    --hwdec=auto-safe
+    --profile=low-latency
+    --framedrop=vo
 
-    # 🔥 OSD
-    --osd-level=3
+    --video-sync=display-resample
+    --interpolation=no
+
+    --cache=yes
+    --cache-secs=10
+
+    # 🔥 OSD (чистый, без таймера)
+    --osd-level=0
     --osd-font-size=18
     --osd-msg1="$OSD"
 
-    # 🔥 звук HDMI
+    # 🔊 звук HDMI
     --audio-device=alsa/default
 )
 

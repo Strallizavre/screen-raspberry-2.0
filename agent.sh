@@ -9,10 +9,6 @@ log() {
     echo "[AGENT v$VERSION] $1"
 }
 
-get_config() {
-    cat $CONFIG
-}
-
 get_command() {
     API=$(jq -r '.api_url' $CONFIG)
     ID=$(jq -r '.device_id' $CONFIG)
@@ -24,7 +20,7 @@ download_file() {
     FILE=$2
 
     if [ -f "$FILE" ]; then
-        log "Файл уже есть: $FILE"
+        log "Файл уже есть"
         return
     fi
 
@@ -35,7 +31,6 @@ download_file() {
 start_player() {
     MODE=$1
     SOURCE=$2
-
     bash /opt/player/player.sh "$MODE" "$SOURCE" &
 }
 
@@ -48,19 +43,15 @@ while true; do
     CMD=$(get_command)
 
     if [ -z "$CMD" ]; then
-        log "OFFLINE режим"
+        log "OFFLINE"
         CMD=$(cat $STATE 2>/dev/null)
-        OFFLINE=1
-    else
-        OFFLINE=0
     fi
 
     TYPE=$(echo $CMD | jq -r '.type')
-
     CURRENT=$(cat $STATE 2>/dev/null)
 
     if [ "$CURRENT" = "$CMD" ]; then
-        log "Без изменений → не трогаем плеер"
+        log "Без изменений"
         sleep 60
         continue
     fi
