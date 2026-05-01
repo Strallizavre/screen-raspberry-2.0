@@ -39,6 +39,10 @@ kill_player() {
     pkill -f mpv
 }
 
+is_player_running() {
+    pgrep -f mpv > /dev/null
+}
+
 while true; do
     CMD=$(get_command)
 
@@ -51,9 +55,13 @@ while true; do
     CURRENT=$(cat $STATE 2>/dev/null)
 
     if [ "$CURRENT" = "$CMD" ]; then
-        log "Без изменений"
-        sleep 60
-        continue
+        if is_player_running; then
+            log "Без изменений и плеер работает"
+            sleep 60
+            continue
+        else
+            log "Плеер не запущен → запускаем"
+        fi
     fi
 
     echo "$CMD" > $STATE

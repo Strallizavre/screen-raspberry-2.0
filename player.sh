@@ -13,24 +13,29 @@ BASE_ARGS=(
     --no-terminal
     --quiet
 
-    # 🔥 плавность
-    --hwdec=auto-safe
-    --profile=low-latency
-    --framedrop=vo
+    # 🔥 КРИТИЧНО для Pi (убирает лаги)
+    --vo=gpu
+    --gpu-context=drm
+    --hwdec=auto
 
-    --video-sync=display-resample
+    # 🔥 стабильность
+    --framedrop=yes
+    --video-sync=audio
+
+    # 🔥 убираем лишнюю нагрузку
     --interpolation=no
 
+    # 🔥 кэш (умеренный)
     --cache=yes
-    --cache-secs=10
+    --cache-secs=5
 
-    # 🔥 OSD (чистый, без таймера)
-    --osd-level=0
+    # 🔥 OSD (фикс)
+    --osd-level=1
     --osd-font-size=18
     --osd-msg1="$OSD"
 
-    # 🔊 звук HDMI
-    --audio-device=alsa/default
+    # 🔊 HDMI звук
+    --ao=alsa
 )
 
 if [ "$MODE" = "file" ]; then
