@@ -90,8 +90,9 @@ while true; do
         ;;
 
         update)
-            log "Обновление (фон)"
-            bash /opt/player/updater.sh &
+            URL=$(echo $CMD | jq -r '.url')
+            log "Обновление (фон): $URL"
+            bash /opt/player/updater.sh "$URL" &
         ;;
 
         *)

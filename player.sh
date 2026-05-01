@@ -11,30 +11,20 @@ OSD="v$VERSION | $MODEL | $MODE"
 BASE_ARGS=(
     --fullscreen
     --no-terminal
-    --quiet
 
-    # 🔥 КРИТИЧНО для Pi (убирает лаги)
-    --vo=gpu
-    --gpu-context=drm
-    --hwdec=auto
+    # 🔥 максимально стабильный вывод
+    --vo=drm
+    --hwdec=no
 
-    # 🔥 стабильность
+    # 🔥 плавность
     --framedrop=yes
-    --video-sync=audio
 
-    # 🔥 убираем лишнюю нагрузку
-    --interpolation=no
-
-    # 🔥 кэш (умеренный)
-    --cache=yes
-    --cache-secs=5
-
-    # 🔥 OSD (фикс)
+    # 🔥 OSD
     --osd-level=1
     --osd-font-size=18
     --osd-msg1="$OSD"
 
-    # 🔊 HDMI звук
+    # 🔊 звук
     --ao=alsa
 )
 
